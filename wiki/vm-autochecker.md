@@ -1,15 +1,19 @@
 # VM autochecker
 
+<!-- TODO rename to "vm setup for autochecker" -->
+
 <h2>Table of contents</h2>
 
 - [What is the VM autochecker](#what-is-the-vm-autochecker)
-- [Set up the VM for autochecker](#set-up-the-vm-for-autochecker)
+- [Set up the VM for the `Autochecker` agent](#set-up-the-vm-for-the-autochecker-agent)
 
 ## What is the VM autochecker
 
 The VM autochecker is a bot that verifies VM setup by connecting via [`SSH`](./ssh.md#what-is-ssh) as a restricted user. The `autochecker` user account has no `sudo` access.
 
-## Set up the VM for autochecker
+<!-- TODO reuse the instructions for adding a user on linux -->
+
+## Set up the VM for the `Autochecker` agent
 
 1. To create the `autochecker` user without `sudo` privileges,
 
