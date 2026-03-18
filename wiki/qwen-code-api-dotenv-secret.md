@@ -22,4 +22,5 @@ The [port](./computer-networks.md#port) at which the [`Qwen Code` API](./qwen-co
 
 ## `QWEN_CODE_API_KEY`
 
-The [API key](./web-api.md#api-key) used to authorize requests to the [`Qwen Code` API](./qwen-code-api.md#what-is-qwen-code-api) deployed on your VM.
+The [`Qwen Code` API key](./qwen-code-api.md#qwen-code-api-key).
+
