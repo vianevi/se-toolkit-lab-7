@@ -9,7 +9,7 @@
   - [Find the `SSH` key files (LOCAL)](#find-the-ssh-key-files-local)
   - [Get the `SSH` public key (LOCAL)](#get-the-ssh-public-key-local)
   - [Add the `SSH` key to the `ssh-agent` (LOCAL)](#add-the-ssh-key-to-the-ssh-agent-local)
-- [Check that the VM is accessible (LOCAL)](#check-that-the-vm-is-accessible-local)
+  - [Check the VM is accessible (LOCAL)](#check-the-vm-is-accessible-local)
 - [Set up the `SSH` access to the VM as the user `root`](#set-up-the-ssh-access-to-the-vm-as-the-user-root)
   - [Update the `SSH` config to connect to the VM as the user `root` (LOCAL)](#update-the-ssh-config-to-connect-to-the-vm-as-the-user-root-local)
   - [Connect to the VM as the user `root` (LOCAL)](#connect-to-the-vm-as-the-user-root-local)
@@ -31,8 +31,6 @@
 - [Troubleshooting](#troubleshooting)
   - [`Permission denied (publickey)`](#permission-denied-publickey)
   - [`Bad owner or permissions`](#bad-owner-or-permissions)
-  - [`Connection timed out`](#connection-timed-out)
-  - [`ping` times out](#ping-times-out)
 
 ## About the VM access
 
@@ -58,7 +56,7 @@ Complete these steps:
 <!-- no toc -->
 1. [Set up `SSH` (LOCAL)](#set-up-ssh-local).
 2. [Create a VM](./vm.md#create-a-vm).
-3. [Check that the VM is accessible (LOCAL)](#check-that-the-vm-is-accessible-local).
+3. [Check that the VM is accessible (LOCAL)](./vm.md#check-the-vm-is-accessible).
 4. [Set up the `SSH` access to the VM as the user `root`](#set-up-the-ssh-access-to-the-vm-as-the-user-root).
 5. [Set up the `SSH` access to the VM as the user `<user>`](#set-up-the-ssh-access-to-the-vm-as-the-user-user).
 6. [Restrict the `SSH` connection](#restrict-the-ssh-connection).
@@ -171,11 +169,11 @@ Complete these steps:
 >
 > [Add the `SSH` key to the `ssh-agent` (LOCAL)](#add-the-ssh-key-to-the-ssh-agent-local) again.
 
-## Check that the VM is accessible (LOCAL)
+### Check the VM is accessible (LOCAL)
 
 1. [Connect to the correct network](./vm.md#connect-to-the-correct-network).
 
-2. [Get `<your-vm-ip-address>`](./vm.md#get-the-ip-address-of-the-vm).
+2. [Get the IP address of the VM](./vm.md#get-the-ip-address-of-the-vm).
 
 3. To check that the VM is accessible,
 
@@ -199,7 +197,9 @@ Complete these steps:
 
    > <h3>Troubleshooting</h3>
    >
-   > [`Connection timed out`](#connection-timed-out).
+   > **`Connection timed out`**
+   >
+   > 1. [Recreate the VM](./vm.md#recreate-the-vm)
 
 ## Set up the `SSH` access to the VM as the user `root`
 
@@ -684,57 +684,6 @@ Complete these steps:
    chmod 700 ~/.ssh
    chmod 600 ~/.ssh/se_toolkit_key
    chmod 644 ~/.ssh/se_toolkit_key.pub
-   ```
-
-### `Connection timed out`
-
-1. Verify host IP and network connectivity.
-2. Verify the VM is running.
-3. To ping the VM,
-
-   [run in the `VS Code Terminal`](./vs-code.md#run-a-command-in-the-vs-code-terminal):
-
-   ```terminal
-   ping <your-vm-ip-address>
-   ```
-
-   You should see logs like these:
-
-   ```terminal
-   PING <your-vm-ip-address> (<your-vm-ip-address>) 56(84) bytes of data.
-
-   64 bytes from <your-vm-ip-address>: icmp_seq=1 ttl=61 time=2.15 ms
-   64 bytes from <your-vm-ip-address>: icmp_seq=2 ttl=61 time=0.996 ms
-   64 bytes from <your-vm-ip-address>: icmp_seq=3 ttl=61 time=1.08 ms
-   
-   ...
-   ```
-
-4. To enable verbose logs for debugging,
-
-   [run in the `VS Code Terminal`](./vs-code.md#run-a-command-in-the-vs-code-terminal):
-
-   ```terminal
-   ssh -v se-toolkit-vm
-   ```
-
-5. Try to stop, delete, and create a new VM if there are still problems.
-
-### `ping` times out
-
-1. Recreate the VM with the same public key as [before](#create-a-new-ssh-key).
-
-If you can't connect:
-
-1. [Go to the VM page](./vm.md#go-to-the-vm-page).
-2. Verify the VM is in `Running` status.
-3. Verify the VM IP address has not changed.
-4. To test the [`SSH`](./ssh.md) connection in verbose mode,
-
-   [run in the `VS Code Terminal`](./vs-code.md#run-a-command-in-the-vs-code-terminal):
-
-   ```terminal
-   ssh -v se-toolkit-vm
    ```
 
 5. If you get `Permission denied (publickey)`, check:
