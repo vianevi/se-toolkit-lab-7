@@ -18,7 +18,7 @@ from pathlib import Path
 # Add parent directory to path so we can import handlers
 sys.path.insert(0, str(Path(__file__).parent))
 
-from handlers.commands import handle_start, handle_help, handle_health, handle_labs, handle_scores
+from handlers.slash.commands import handle_start, handle_help, handle_health, handle_labs, handle_scores
 
 
 def run_test_mode(command: str) -> None:

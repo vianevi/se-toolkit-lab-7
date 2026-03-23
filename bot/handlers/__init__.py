@@ -10,7 +10,7 @@ They don't know about Telegram - same function works from:
 This is separation of concerns: handler logic is separate from transport.
 """
 
-from handlers.commands import handle_start, handle_help, handle_health, handle_labs, handle_scores
+from handlers.slash.commands import handle_start, handle_help, handle_health, handle_labs, handle_scores
 
 __all__ = [
     "handle_start",
