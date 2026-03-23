@@ -19,34 +19,40 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 from handlers.slash.commands import handle_start, handle_help, handle_health, handle_labs, handle_scores
+from services.intent_router import handle_natural_language
 
 
 def run_test_mode(command: str) -> None:
     """
     Run a command in test mode - calls the handler directly and prints result.
-    
+
     Args:
         command: The command to test (e.g., "/start", "/help", "/health")
     """
-    # Parse the command and argument if present
-    parts = command.strip().split(maxsplit=1)
-    cmd = parts[0].lower()
-    arg = parts[1] if len(parts) > 1 else None
-    
-    # Route to appropriate handler
-    if cmd == "/start":
-        response = handle_start()
-    elif cmd == "/help":
-        response = handle_help()
-    elif cmd == "/health":
-        response = handle_health()
-    elif cmd == "/labs":
-        response = handle_labs()
-    elif cmd == "/scores":
-        response = handle_scores(arg)
+    # Check if this is a slash command or natural language
+    if command.strip().startswith("/"):
+        # Slash command - route to command handlers
+        parts = command.strip().split(maxsplit=1)
+        cmd = parts[0].lower()
+        arg = parts[1] if len(parts) > 1 else None
+
+        # Route to appropriate handler
+        if cmd == "/start":
+            response = handle_start()
+        elif cmd == "/help":
+            response = handle_help()
+        elif cmd == "/health":
+            response = handle_health()
+        elif cmd == "/labs":
+            response = handle_labs()
+        elif cmd == "/scores":
+            response = handle_scores(arg)
+        else:
+            response = f"Unknown command: {cmd}. Use /help to see available commands."
     else:
-        response = f"Unknown command: {cmd}. Use /help to see available commands."
-    
+        # Natural language query - use intent router
+        response = handle_natural_language(command)
+
     print(response)
 
 
