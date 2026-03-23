@@ -95,3 +95,95 @@ By the end of this lab, you should be able to say:
 ### Optional
 
 1. [Flutter Web Chatbot](./lab/tasks/optional/task-1.md)
+
+## Deploy
+
+### Prerequisites
+
+Before deploying the bot, ensure you have:
+
+1. A Telegram bot token from [@BotFather](https://t.me/BotFather)
+2. The LLM API credentials (Qwen Code API)
+3. The backend running with data synced
+
+### Environment Variables
+
+The bot requires these variables in `.env.docker.secret`:
+
+```bash
+# Telegram Bot
+BOT_TOKEN=your-bot-token-from-botfather
+
+# LMS Backend API
+LMS_API_KEY=your-lms-api-key
+
+# LLM API (for natural language queries)
+LLM_API_KEY=your-llm-api-key
+LLM_API_BASE_URL=http://host.docker.internal:42005/v1
+LLM_API_MODEL=coder-model
+```
+
+**Important:** `LLM_API_BASE_URL` uses `host.docker.internal` to reach the Qwen proxy running on the host machine.
+
+### Deploy Commands
+
+1. **Stop any running bot process:**
+   ```bash
+   pkill -f "bot.py" 2>/dev/null
+   ```
+
+2. **Start all services:**
+   ```bash
+   cd ~/se-toolkit-lab-7
+   docker compose --env-file .env.docker.secret up --build -d
+   ```
+
+3. **Verify services are running:**
+   ```bash
+   docker compose --env-file .env.docker.secret ps
+   ```
+
+   You should see `bot`, `backend`, `postgres`, `pgadmin`, and `caddy` all with status "Up".
+
+4. **Check bot logs:**
+   ```bash
+   docker compose --env-file .env.docker.secret logs bot --tail 20
+   ```
+
+   Look for:
+   - "Application started" — bot connected to Telegram
+   - "HTTP Request: POST .../getUpdates" — bot is polling for messages
+   - No Python tracebacks
+
+### Verify in Telegram
+
+Send these commands to your bot in Telegram:
+
+- `/start` — Welcome message with quick actions
+- `/health` — Backend status (e.g., "Backend is healthy. 50 items available.")
+- `/labs` — List of available labs
+- `/scores lab-04` — Pass rates for Lab 04
+- "what labs are available?" — Natural language query (LLM-powered)
+- "which lab has the lowest pass rate?" — Multi-step reasoning
+
+### Troubleshooting
+
+| Symptom | Solution |
+|---------|----------|
+| Bot container keeps restarting | Check logs: `docker compose logs bot`. Usually a missing env var or import error. |
+| `/health` fails but worked before | `LMS_API_BASE_URL` must be `http://backend:8000` (not localhost). Inside Docker, localhost is the container itself. |
+| LLM queries fail | `LLM_API_BASE_URL` must use `host.docker.internal` (not localhost). The Qwen proxy is on a different Docker network. |
+| "BOT_TOKEN is required" error | Bot env vars need to be in `.env.docker.secret`, not just `.env.bot.secret`. |
+| Build fails at `uv sync --locked` | Ensure `uv.lock` exists in the bot directory. Run `cd bot && uv lock` to generate it. |
+
+### Stop the Bot
+
+```bash
+docker compose --env-file .env.docker.secret stop bot
+```
+
+### Restart the Bot
+
+```bash
+docker compose --env-file .env.docker.secret restart bot
+```
