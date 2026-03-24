@@ -21,7 +21,18 @@ def handle_start() -> str:
     Returns:
         Welcome message for new users.
     """
-    return "Welcome to the LMS Bot! 🎓\n\nI can help you check your lab scores, view available labs, and get system status. Use /help to see all available commands."
+    return """Welcome to the LMS Bot! 🎓
+
+I can help you check your lab scores, view available labs, and get system status.
+
+Quick actions:
+• /labs - See all available labs
+• /health - Check system status
+• /scores <lab> - Get scores for a lab
+
+Or just ask me a question like "which lab has the lowest pass rate?"
+
+Use /help to see all available commands."""
 
 
 def handle_help() -> str:
